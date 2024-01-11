@@ -1,13 +1,23 @@
-# This is a sample Python script.
+import os
+from pathlib import Path
 
-# Press Umschalt+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    f=open()
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    mypath: str = r"H:\01_Projekte\Elektroden_Charakterisierung\EIS_Messungen"
+    #mypath: str = r"H:\01_Projekte\Elektroden_Charakterisierung\Python\dtaConverter"
+    for file in os.listdir(mypath):
+        if file.endswith(".DTA"):
+            fileExExtension = Path(file).stem
+            FilePath = os.path.join(mypath, fileExExtension)
+
+            fOrig = open(FilePath + ".DTA", "r")
+            fNew = open(FilePath + ".txt", "a")
+            lFound = 0
+            for line in fOrig:
+                if '	#	s	Hz	ohm	' in line or lFound == 1:
+                    #print(line)
+                    fNew.write(line)
+                    lFound = 1
+
+            fOrig.close()
+            fNew.close()
